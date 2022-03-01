@@ -30,6 +30,44 @@ const ActionMenu: React.FC<Menu> = ({ phoneNumber, handleDeleteWorker }) => {
   );
 };
 
+const StandInMenu: React.FC = () => {
+  const [label, selectLabel] = React.useState('[Select]');
+  const menu = useMenuState();
+  return (
+    <Box display="flex" justifyContent="center">
+      <MenuButton {...menu} variant="reset" size="reset">
+        {label}
+      </MenuButton>
+      <Menu {...menu} aria-label="Preferences">
+        <MenuItem
+          {...menu}
+          onClick={() => {
+            selectLabel('Bruno');
+          }}
+        >
+          Bruno
+        </MenuItem>
+        <MenuItem
+          {...menu}
+          onClick={() => {
+            selectLabel('Adrian');
+          }}
+        >
+          Adrian
+        </MenuItem>
+        <MenuItem
+          {...menu}
+          onClick={() => {
+            selectLabel('Andrej');
+          }}
+        >
+          Andrej
+        </MenuItem>
+      </Menu>
+    </Box>
+  );
+};
+
 interface GridProps {
   data: Worker[];
   handleDeleteWorker: (phoneNumber: string) => void;
@@ -37,6 +75,7 @@ interface GridProps {
 
 export const GridAgents: React.FC<GridProps> = ({ data, handleDeleteWorker }) => {
   /* eslint-disable react/no-array-index-key */
+
   return (
     <DataGrid aria-label="User list" data-testid="data-grid">
       <DataGridHead>
@@ -45,6 +84,7 @@ export const GridAgents: React.FC<GridProps> = ({ data, handleDeleteWorker }) =>
           <DataGridHeader>Phone Number</DataGridHeader>
           <DataGridHeader>Role</DataGridHeader>
           <DataGridHeader>Can manage agents</DataGridHeader>
+          <DataGridHeader textAlign="center">Stand-in</DataGridHeader>
           <DataGridHeader textAlign="center">Actions</DataGridHeader>
         </DataGridRow>
       </DataGridHead>
@@ -55,6 +95,9 @@ export const GridAgents: React.FC<GridProps> = ({ data, handleDeleteWorker }) =>
             <DataGridCell key={`col2-${row.phoneNumber}`}>{row.phoneNumber}</DataGridCell>
             <DataGridCell key={`col3-${row.phoneNumber}`}>{row.role}</DataGridCell>
             <DataGridCell key={`col4-${row.phoneNumber}`}>{row.canAddAgents ? 'Yes' : 'No'}</DataGridCell>
+            <DataGridCell key={`col6-${row.phoneNumber}`}>
+              <StandInMenu />
+            </DataGridCell>
             <DataGridCell key={`col-5`}>
               <ActionMenu phoneNumber={row.phoneNumber} handleDeleteWorker={handleDeleteWorker} />
             </DataGridCell>
